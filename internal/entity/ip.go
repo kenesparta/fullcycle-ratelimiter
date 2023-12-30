@@ -1,6 +1,7 @@
 package entity
 
 type IP struct {
-	Value     string
-	RateLimit int64
+	Value           string
+	BlockedDuration int64
+	RateLimit       RateLimiter
 }
