@@ -1,0 +1,6 @@
+POST {{url}}/api/item
+Content-Type: application/json
+
+{}
+
+###

@@ -15,7 +15,12 @@ type App struct {
 
 // RateLimiter properties for configuration
 type RateLimiter struct {
-	ByIP int64
+	ByIP LimitValues
+}
+
+type LimitValues struct {
+	TimeWindow  int64
+	MaxRequests int64
 }
 
 // Config Final Struct Configuration
