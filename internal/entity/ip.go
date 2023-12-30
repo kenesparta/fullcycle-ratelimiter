@@ -1,7 +1,18 @@
 package entity
 
 type IP struct {
-	Value           string
+	value string
+
+	// BlockedDuration is the number of SECONDS that it blocks the token if it reaches the RateLimiter.MaxRequests each
+	// RateLimiter.TimeWindowSec amount of seconds.
 	BlockedDuration int64
-	RateLimit       RateLimiter
+	RateLimiter     RateLimiter
+}
+
+func (ip *IP) SaveValue(ipValue string) {
+	ip.value = ipValue
+}
+
+func (ip *IP) Value() string {
+	return ip.value
 }

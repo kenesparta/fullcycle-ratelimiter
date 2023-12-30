@@ -19,8 +19,9 @@ type RateLimiter struct {
 }
 
 type LimitValues struct {
-	TimeWindow  int64
-	MaxRequests int64
+	MaxRequests     int
+	TimeWindow      int64
+	BlockedDuration int64
 }
 
 // Config Final Struct Configuration

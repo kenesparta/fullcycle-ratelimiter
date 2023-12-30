@@ -49,7 +49,11 @@ func (v *Viper) Get() (*config.Config, error) {
 			Port: viper.GetString("app.port"),
 		},
 		RateLimiter: config.RateLimiter{
-			ByIP: viper.GetInt64("rate_limiter.by_ip"),
+			ByIP: config.LimitValues{
+				BlockedDuration: viper.GetInt64("rate_limiter.by_ip.blocked_duration"),
+				TimeWindow:      viper.GetInt64("rate_limiter.by_ip.time_window"),
+				MaxRequests:     viper.GetInt("rate_limiter.by_ip.max_requests"),
+			},
 		},
 	}, nil
 }
