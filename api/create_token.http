@@ -1,6 +1,4 @@
-POST {{url}}/api/item
+GET {{url}}/hello-world
 Content-Type: application/json
-
-{}
 
 ###

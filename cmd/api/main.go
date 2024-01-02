@@ -1,21 +1,17 @@
 package main
 
 import (
+	"log"
 	"net/http"
-
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
+	
+	"github.com/kenesparta/fullcycle-ratelimiter/internal/infra/webserver"
 )
 
 func main() {
 	cfg, _ := NewRunConfig()
-	r := chi.NewRouter()
-	r.Use(middleware.Logger)
-	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("welcome"))
-	})
-
-	if err := http.ListenAndServe(":"+cfg.Config.App.Port, r); err != nil {
-		return
-	}
+	ipHandler := NewIPHandler()
+	newWebServer := webserver.NewWebServer(cfg.Config.App.Port)
+	newWebServer.AddHandler(http.MethodGet, "/hello-world", ipHandler.HelloWorld)
+	log.Println("Starting web server on port", cfg.Config.App.Port)
+	newWebServer.Start()
 }
