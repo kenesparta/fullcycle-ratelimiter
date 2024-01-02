@@ -83,7 +83,7 @@ func TestRegisterIPRequest_Execute(t *testing.T) {
 				SaveBlockedDuration(ctx, tc.input.IP, cfg.RateLimiter.ByIP.BlockedDuration).
 				Return(nil).
 				AnyTimes()
-			rrq := NewRegisterRequest(mockIPRepo, cfg)
+			rrq := NewRegisterIPRequest(mockIPRepo, cfg)
 			exRes, err := rrq.Execute(ctx, tc.input)
 			assert.Nil(t, err)
 			assert.Equal(t, tc.expected, exRes)

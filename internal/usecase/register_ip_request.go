@@ -13,7 +13,7 @@ type RegisterIPRequest struct {
 	config *config.Config
 }
 
-func NewRegisterRequest(
+func NewRegisterIPRequest(
 	ipRepo entity.IPRepository,
 	config *config.Config,
 ) *RegisterIPRequest {

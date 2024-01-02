@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	internalMw "github.com/kenesparta/fullcycle-ratelimiter/internal/infra/webserver/middleware"
 )
 
 type HandlerProps struct {
@@ -16,9 +17,10 @@ type HandlerProps struct {
 }
 
 type WebServer struct {
-	WebServerPort string
-	Router        chi.Router
-	Handlers      []HandlerProps
+	WebServerPort      string
+	Router             chi.Router
+	Handlers           []HandlerProps
+	InternalMiddleware internalMw.Middleware
 }
 
 func NewWebServer(serverPort string) *WebServer {
@@ -39,6 +41,7 @@ func (s *WebServer) AddHandler(method, path string, handler http.HandlerFunc) {
 
 func (s *WebServer) Start() {
 	s.Router.Use(middleware.Logger)
+	s.Router.Use(s.InternalMiddleware.RateLimiter)
 	for _, h := range s.Handlers {
 		s.Router.Method(h.Method, h.Path, h.Func)
 	}
