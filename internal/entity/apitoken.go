@@ -24,6 +24,10 @@ func (at *APIToken) GenerateValue() error {
 	return nil
 }
 
+func (at *APIToken) SetValue(value string) {
+	at.value = value
+}
+
 func (at *APIToken) Value() string {
 	return at.value
 }

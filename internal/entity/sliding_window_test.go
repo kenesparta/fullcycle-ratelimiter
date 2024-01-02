@@ -8,7 +8,7 @@ import (
 )
 
 func TestRemoveOldRequests(t *testing.T) {
-	startTime := time.Date(2023, time.January, 1, 12, 34, 56, 0, time.UTC)
+	startTime := time.Date(2024, time.January, 1, 12, 34, 56, 0, time.UTC)
 
 	tests := []struct {
 		name        string
@@ -66,7 +66,7 @@ func TestRemoveOldRequests(t *testing.T) {
 }
 
 func TestAllow(t *testing.T) {
-	startTime := time.Date(2023, time.January, 1, 12, 34, 56, 0, time.UTC)
+	startTime := time.Date(2024, time.January, 1, 12, 34, 56, 0, time.UTC)
 
 	tests := []struct {
 		name          string
@@ -77,9 +77,16 @@ func TestAllow(t *testing.T) {
 			name: "allow",
 			rl: RateLimiter{
 				requests: []time.Time{
+					startTime.Add(-90 * time.Millisecond),
+					startTime.Add(-80 * time.Millisecond),
+					startTime.Add(-70 * time.Millisecond),
+					startTime.Add(-60 * time.Millisecond),
+					startTime.Add(-50 * time.Millisecond),
+					startTime.Add(-40 * time.Millisecond),
+					startTime.Add(-30 * time.Millisecond),
+					startTime.Add(-20 * time.Millisecond),
+					startTime.Add(-10 * time.Millisecond),
 					startTime,
-					startTime.Add(1 * time.Second),
-					startTime.Add(2 * time.Second),
 				},
 				TimeWindowSec: 1,
 				MaxRequests:   10,
@@ -133,11 +140,11 @@ func TestAllow(t *testing.T) {
 			expectedAllow: false,
 		},
 		{
-			name: "allow",
+			name: "no allow",
 			rl: RateLimiter{
 				requests: func() []time.Time {
 					var timeSlice []time.Time
-					for i := 0; i < 99; i++ {
+					for i := 0; i < 100; i++ {
 						timeSlice = append(timeSlice, startTime.Add(time.Duration(i)*time.Second))
 					}
 					return timeSlice
@@ -148,7 +155,7 @@ func TestAllow(t *testing.T) {
 			expectedAllow: true,
 		},
 		{
-			name: "no allow",
+			name: "allow",
 			rl: RateLimiter{
 				requests: func() []time.Time {
 					var timeSlice []time.Time
@@ -160,7 +167,7 @@ func TestAllow(t *testing.T) {
 				TimeWindowSec: 1,
 				MaxRequests:   1000,
 			},
-			expectedAllow: false,
+			expectedAllow: true,
 		},
 	}
 

@@ -54,6 +54,21 @@ func (mr *MockcommonRepoMockRecorder) GetBlockedDuration(ctx, key any) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlockedDuration", reflect.TypeOf((*MockcommonRepo)(nil).GetBlockedDuration), ctx, key)
 }
 
+// GetRequest mocks base method.
+func (m *MockcommonRepo) GetRequest(ctx context.Context, value string) (*entity.RateLimiter, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRequest", ctx, value)
+	ret0, _ := ret[0].(*entity.RateLimiter)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRequest indicates an expected call of GetRequest.
+func (mr *MockcommonRepoMockRecorder) GetRequest(ctx, value any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequest", reflect.TypeOf((*MockcommonRepo)(nil).GetRequest), ctx, value)
+}
+
 // SaveBlockedDuration mocks base method.
 func (m *MockcommonRepo) SaveBlockedDuration(ctx context.Context, key string, BlockedDuration int64) error {
 	m.ctrl.T.Helper()
@@ -69,7 +84,7 @@ func (mr *MockcommonRepoMockRecorder) SaveBlockedDuration(ctx, key, BlockedDurat
 }
 
 // UpsertRequest mocks base method.
-func (m *MockcommonRepo) UpsertRequest(ctx context.Context, key string, rl entity.RateLimiter) error {
+func (m *MockcommonRepo) UpsertRequest(ctx context.Context, key string, rl *entity.RateLimiter) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpsertRequest", ctx, key, rl)
 	ret0, _ := ret[0].(error)
@@ -134,6 +149,21 @@ func (mr *MockAPITokenRepositoryMockRecorder) GetBlockedDuration(ctx, key any) *
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlockedDuration", reflect.TypeOf((*MockAPITokenRepository)(nil).GetBlockedDuration), ctx, key)
 }
 
+// GetRequest mocks base method.
+func (m *MockAPITokenRepository) GetRequest(ctx context.Context, value string) (*entity.RateLimiter, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRequest", ctx, value)
+	ret0, _ := ret[0].(*entity.RateLimiter)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRequest indicates an expected call of GetRequest.
+func (mr *MockAPITokenRepositoryMockRecorder) GetRequest(ctx, value any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequest", reflect.TypeOf((*MockAPITokenRepository)(nil).GetRequest), ctx, value)
+}
+
 // Save mocks base method.
 func (m *MockAPITokenRepository) Save(ctx context.Context, token *entity.APIToken) error {
 	m.ctrl.T.Helper()
@@ -163,7 +193,7 @@ func (mr *MockAPITokenRepositoryMockRecorder) SaveBlockedDuration(ctx, key, Bloc
 }
 
 // UpsertRequest mocks base method.
-func (m *MockAPITokenRepository) UpsertRequest(ctx context.Context, key string, rl entity.RateLimiter) error {
+func (m *MockAPITokenRepository) UpsertRequest(ctx context.Context, key string, rl *entity.RateLimiter) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpsertRequest", ctx, key, rl)
 	ret0, _ := ret[0].(error)
@@ -214,6 +244,21 @@ func (mr *MockIPRepositoryMockRecorder) GetBlockedDuration(ctx, key any) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlockedDuration", reflect.TypeOf((*MockIPRepository)(nil).GetBlockedDuration), ctx, key)
 }
 
+// GetRequest mocks base method.
+func (m *MockIPRepository) GetRequest(ctx context.Context, value string) (*entity.RateLimiter, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRequest", ctx, value)
+	ret0, _ := ret[0].(*entity.RateLimiter)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRequest indicates an expected call of GetRequest.
+func (mr *MockIPRepositoryMockRecorder) GetRequest(ctx, value any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequest", reflect.TypeOf((*MockIPRepository)(nil).GetRequest), ctx, value)
+}
+
 // SaveBlockedDuration mocks base method.
 func (m *MockIPRepository) SaveBlockedDuration(ctx context.Context, key string, BlockedDuration int64) error {
 	m.ctrl.T.Helper()
@@ -229,7 +274,7 @@ func (mr *MockIPRepositoryMockRecorder) SaveBlockedDuration(ctx, key, BlockedDur
 }
 
 // UpsertRequest mocks base method.
-func (m *MockIPRepository) UpsertRequest(ctx context.Context, key string, rl entity.RateLimiter) error {
+func (m *MockIPRepository) UpsertRequest(ctx context.Context, key string, rl *entity.RateLimiter) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpsertRequest", ctx, key, rl)
 	ret0, _ := ret[0].(error)

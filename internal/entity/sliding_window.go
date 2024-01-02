@@ -33,12 +33,7 @@ func (rl *RateLimiter) Allow(fromTime time.Time) bool {
 	defer rl.lock.Unlock()
 
 	rl.removeOldRequests(fromTime)
-	if len(rl.requests) < rl.MaxRequests {
-		rl.addRequests(fromTime)
-		return true
-	}
-
-	return false
+	return len(rl.requests) <= rl.MaxRequests
 }
 
 // GetDurationTimeWindow  converts the time window from an integer number of seconds into a time.Duration type.
@@ -60,6 +55,6 @@ func (rl *RateLimiter) removeOldRequests(fromTime time.Time) {
 	rl.requests = rl.requests[start:]
 }
 
-func (rl *RateLimiter) addRequests(request time.Time) {
+func (rl *RateLimiter) AddRequests(request time.Time) {
 	rl.requests = append(rl.requests, request)
 }
