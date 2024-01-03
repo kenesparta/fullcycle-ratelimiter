@@ -31,13 +31,13 @@ func TestRegisterIPRequest_Execute(t *testing.T) {
 
 	tests := []struct {
 		name       string
-		input      dto.RequestSave
+		input      dto.IPRequestSave
 		getRequest *entity.RateLimiter
-		expected   dto.RequestResult
+		expected   dto.IPRequestResult
 	}{
 		{
 			name: "with api token and result in getRequest",
-			input: dto.RequestSave{
+			input: dto.IPRequestSave{
 				IP:       "127.0.0.1",
 				APIToken: "6d7b8095a5c7414d3a7a6a38d83403c8c859841dfd036b10f3b2c203a2a70392",
 				TimeAdd:  startTime,
@@ -49,13 +49,13 @@ func TestRegisterIPRequest_Execute(t *testing.T) {
 				rt.AddRequests(startTime.Add(-10 * time.Millisecond))
 				return rt
 			}(),
-			expected: dto.RequestResult{
+			expected: dto.IPRequestResult{
 				Allow: true,
 			},
 		},
 		{
 			name: "with api token and result in getRequest",
-			input: dto.RequestSave{
+			input: dto.IPRequestSave{
 				IP:       "192.168.0.166",
 				APIToken: "3aaf2c6cead4fad72c5e1d944b84939f632e6b471483ee451675a703815f2251",
 				TimeAdd:  startTime,
@@ -68,7 +68,7 @@ func TestRegisterIPRequest_Execute(t *testing.T) {
 				rt.AddRequests(startTime.Add(-10 * time.Millisecond))
 				return rt
 			}(),
-			expected: dto.RequestResult{
+			expected: dto.IPRequestResult{
 				Allow: false,
 			},
 		},

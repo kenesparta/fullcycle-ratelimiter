@@ -26,9 +26,9 @@ func NewRegisterAPITokenRequest(
 //  4. Finally, we execute the validation and update/insert the data in the database.
 func (ipr *RegisterAPITokenRequest) Execute(
 	ctx context.Context,
-	input dto.RequestSave,
-) (dto.RequestResult, error) {
-	return dto.RequestResult{
+	input dto.IPRequestSave,
+) (dto.IPRequestResult, error) {
+	return dto.IPRequestResult{
 		Allow: true,
 	}, nil
 }

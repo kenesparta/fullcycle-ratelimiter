@@ -14,7 +14,7 @@ func main() {
 	cfg, _ := NewRunConfig()
 	redisCli := redis.NewClient(
 		&redis.Options{
-			Addr: fmt.Sprintf("%s:%d", cfg.Config.Redis.Host, cfg.Config.Redis.Db),
+			Addr: fmt.Sprintf("%s:%s", cfg.Config.Redis.Host, cfg.Config.Redis.Port),
 			DB:   cfg.Config.Redis.Db,
 		},
 	)

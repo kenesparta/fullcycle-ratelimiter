@@ -3,6 +3,7 @@ package middleware
 import (
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/kenesparta/fullcycle-ratelimiter/config"
@@ -22,8 +23,14 @@ func (a *Middleware) RateLimiter(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ipDB := database.NewIPRedis(a.RedisClient)
 		ipReq := usecase.NewRegisterIPRequest(ipDB, a.Config)
-		execute, execErr := ipReq.Execute(r.Context(), dto.RequestSave{
-			IP:      r.RemoteAddr,
+		execute, execErr := ipReq.Execute(r.Context(), dto.IPRequestSave{
+			IP: func() string {
+				spltStr := strings.Split(r.RemoteAddr, ":")
+				if len(spltStr) > 0 {
+					return spltStr[0]
+				}
+				return ""
+			}(),
 			TimeAdd: time.Now(),
 		})
 		if execErr != nil {

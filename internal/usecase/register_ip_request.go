@@ -31,44 +31,44 @@ func NewRegisterIPRequest(
 //  4. Finally, we execute the validation and update/insert the data in the database.
 func (ipr *RegisterIPRequest) Execute(
 	ctx context.Context,
-	input dto.RequestSave,
-) (dto.RequestResult, error) {
-	ipValue, blockedErr := ipr.ipRepo.GetBlockedDuration(ctx, input.IP)
+	input dto.IPRequestSave,
+) (dto.IPRequestResult, error) {
+	status, blockedErr := ipr.ipRepo.GetBlockedDuration(ctx, input.IP)
 	if blockedErr != nil {
-		return dto.RequestResult{}, blockedErr
+		return dto.IPRequestResult{}, blockedErr
 	}
 
-	if ipValue != "" {
+	if status == entity.StatusBlocked {
 		log.Println("ip is blocked due to exceeding the maximum number of requests")
-		return dto.RequestResult{}, entity.ErrIPExceededAmountRequest
+		return dto.IPRequestResult{}, entity.ErrIPExceededAmountRequest
 	}
 
 	getRequest, getReqErr := ipr.ipRepo.GetRequest(ctx, input.IP)
 	if getReqErr != nil {
 		log.Printf("Error getting requests: %s \n", getReqErr.Error())
-		return dto.RequestResult{}, getReqErr
+		return dto.IPRequestResult{}, getReqErr
 	}
 
 	getRequest.TimeWindowSec = ipr.config.RateLimiter.ByIP.TimeWindow
 	getRequest.MaxRequests = ipr.config.RateLimiter.ByIP.MaxRequests
 	getRequest.AddRequests(input.TimeAdd)
+	isAllowed := getRequest.Allow(input.TimeAdd)
 	if upsertErr := ipr.ipRepo.UpsertRequest(ctx, input.IP, getRequest); upsertErr != nil {
 		log.Printf("Error updating/inserting rate limit: %s \n", upsertErr.Error())
-		return dto.RequestResult{}, upsertErr
+		return dto.IPRequestResult{}, upsertErr
 	}
 
-	isAllowed := getRequest.Allow(input.TimeAdd)
 	if !isAllowed {
 		if saveErr := ipr.ipRepo.SaveBlockedDuration(
 			ctx,
 			input.IP,
 			ipr.config.RateLimiter.ByIP.BlockedDuration,
 		); saveErr != nil {
-			return dto.RequestResult{}, saveErr
+			return dto.IPRequestResult{}, saveErr
 		}
 	}
 
-	return dto.RequestResult{
+	return dto.IPRequestResult{
 		Allow: isAllowed,
 	}, nil
 }

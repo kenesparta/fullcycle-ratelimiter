@@ -1,5 +1,11 @@
 package entity
 
+const (
+	IPPrefixRateKey     = "rate:ip"
+	IPPrefixDurationKey = "duration:ip"
+	StatusBlocked       = "IPBlocked"
+)
+
 type IP struct {
 	value string
 

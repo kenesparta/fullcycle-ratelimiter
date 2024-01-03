@@ -6,7 +6,7 @@ import (
 
 //go:generate mockgen -source repository.go -destination mock/repository_mock.go -package mock
 type commonRepo interface {
-	// UpsertRequest Updates or inserts a new request inside the RateLimiter.requests array.
+	// UpsertRequest Updates or inserts a new request inside the RateLimiter.Requests array.
 	// This also creates a new instance of Request
 	UpsertRequest(ctx context.Context, key string, rl *RateLimiter) error
 
@@ -17,7 +17,7 @@ type commonRepo interface {
 	GetBlockedDuration(ctx context.Context, key string) (string, error)
 
 	// GetRequest reads the stored array of request
-	GetRequest(ctx context.Context, value string) (*RateLimiter, error)
+	GetRequest(ctx context.Context, key string) (*RateLimiter, error)
 }
 
 type APITokenRepository interface {

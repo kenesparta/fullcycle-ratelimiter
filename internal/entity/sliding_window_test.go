@@ -16,9 +16,9 @@ func TestRemoveOldRequests(t *testing.T) {
 		expectedLen int
 	}{
 		{
-			name: "No requests to remove",
+			name: "No Requests to remove",
 			rl: RateLimiter{
-				requests: []time.Time{
+				Requests: []time.Time{
 					startTime,
 					startTime.Add(1 * time.Second),
 				},
@@ -28,9 +28,9 @@ func TestRemoveOldRequests(t *testing.T) {
 			expectedLen: 2,
 		},
 		{
-			name: "4 requests to remove",
+			name: "4 Requests to remove",
 			rl: RateLimiter{
-				requests: []time.Time{
+				Requests: []time.Time{
 					startTime.Add(-4 * time.Second),
 					startTime.Add(-3 * time.Second),
 					startTime.Add(-2 * time.Second),
@@ -44,9 +44,9 @@ func TestRemoveOldRequests(t *testing.T) {
 			expectedLen: 2,
 		},
 		{
-			name: "1 requests to remove",
+			name: "1 Requests to remove",
 			rl: RateLimiter{
-				requests: []time.Time{
+				Requests: []time.Time{
 					startTime.Add(-1 * time.Second),
 					startTime,
 				},
@@ -60,7 +60,7 @@ func TestRemoveOldRequests(t *testing.T) {
 	for i := 0; i < len(tests); i++ {
 		t.Run(tests[i].name, func(t *testing.T) {
 			tests[i].rl.removeOldRequests(startTime)
-			assert.Len(t, tests[i].rl.requests, tests[i].expectedLen)
+			assert.Len(t, tests[i].rl.Requests, tests[i].expectedLen)
 		})
 	}
 }
@@ -76,7 +76,7 @@ func TestAllow(t *testing.T) {
 		{
 			name: "allow",
 			rl: RateLimiter{
-				requests: []time.Time{
+				Requests: []time.Time{
 					startTime.Add(-90 * time.Millisecond),
 					startTime.Add(-80 * time.Millisecond),
 					startTime.Add(-70 * time.Millisecond),
@@ -96,7 +96,7 @@ func TestAllow(t *testing.T) {
 		{
 			name: "allow",
 			rl: RateLimiter{
-				requests: []time.Time{
+				Requests: []time.Time{
 					startTime.Add(-14 * time.Second),
 					startTime.Add(-13 * time.Second),
 					startTime.Add(-12 * time.Second),
@@ -121,7 +121,7 @@ func TestAllow(t *testing.T) {
 		{
 			name: "no allow",
 			rl: RateLimiter{
-				requests: []time.Time{
+				Requests: []time.Time{
 					startTime,
 					startTime.Add(10 * time.Millisecond),
 					startTime.Add(20 * time.Millisecond),
@@ -142,7 +142,7 @@ func TestAllow(t *testing.T) {
 		{
 			name: "no allow",
 			rl: RateLimiter{
-				requests: func() []time.Time {
+				Requests: func() []time.Time {
 					var timeSlice []time.Time
 					for i := 0; i < 100; i++ {
 						timeSlice = append(timeSlice, startTime.Add(time.Duration(i)*time.Second))
@@ -157,7 +157,7 @@ func TestAllow(t *testing.T) {
 		{
 			name: "allow",
 			rl: RateLimiter{
-				requests: func() []time.Time {
+				Requests: func() []time.Time {
 					var timeSlice []time.Time
 					for i := 0; i < 1000; i++ {
 						timeSlice = append(timeSlice, startTime.Add(time.Duration(i)*time.Second))
