@@ -2,10 +2,11 @@ package usecase
 
 import (
 	"context"
+	"log"
+
 	"github.com/kenesparta/fullcycle-ratelimiter/config"
 	"github.com/kenesparta/fullcycle-ratelimiter/internal/dto"
 	"github.com/kenesparta/fullcycle-ratelimiter/internal/entity"
-	"log"
 )
 
 type RegisterIPRequest struct {

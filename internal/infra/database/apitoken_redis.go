@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/kenesparta/fullcycle-ratelimiter/internal/dto"
 	"log"
 	"time"
 
+	"github.com/kenesparta/fullcycle-ratelimiter/internal/dto"
 	"github.com/kenesparta/fullcycle-ratelimiter/internal/entity"
 	"github.com/redis/go-redis/v9"
 )

@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/kenesparta/fullcycle-ratelimiter/internal/infra/webserver/middleware"
 	"github.com/redis/go-redis/v9"
 	"log"
 	"net/http"
 
 	"github.com/kenesparta/fullcycle-ratelimiter/internal/infra/webserver"
+	"github.com/kenesparta/fullcycle-ratelimiter/internal/infra/webserver/middleware"
 )
 
 func main() {
