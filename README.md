@@ -1,2 +1,2 @@
-# fullcycle-ratelimiter
+# FullCycle ratelimiter
 Rate Limiter challenge
