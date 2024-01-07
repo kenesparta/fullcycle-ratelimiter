@@ -7,7 +7,7 @@ type APITokenInput struct {
 }
 
 type APITokenCreateOutput struct {
-	TokenValue string `json:"token"`
+	TokenValue string `json:"api-token"`
 }
 
 type APITokenOutput struct {
