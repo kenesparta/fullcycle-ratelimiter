@@ -22,7 +22,7 @@ type commonRepo interface {
 
 type APITokenRepository interface {
 	// Save Persists a new APIToken with the initial values of MaxRequest and TimeWindowSec
-	Save(ctx context.Context, token *APIToken) error
+	Save(ctx context.Context, token *APIToken) (string, error)
 
 	// Get Obtains the stored APIToken
 	Get(ctx context.Context, value string) APIToken

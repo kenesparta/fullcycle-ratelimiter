@@ -3,9 +3,8 @@ package dto
 import "time"
 
 type IPRequestSave struct {
-	IP       string
-	APIToken string
-	TimeAdd  time.Time
+	IP      string
+	TimeAdd time.Time
 }
 
 type IPRequestResult struct {

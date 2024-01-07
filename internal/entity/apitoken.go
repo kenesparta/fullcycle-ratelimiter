@@ -5,6 +5,13 @@ import (
 	"encoding/hex"
 )
 
+const (
+	APITokenPrefixRateKey     = "rate:api-token"
+	APITokenPrefixDurationKey = "duration:api-token"
+	APITokenPrefixValueKey    = "value:api-token"
+	StatusAPITokenBlocked     = "APITokenBlocked"
+)
+
 // APIToken Thi token is related with the token API that we can generate for each client
 type APIToken struct {
 	value string

@@ -9,28 +9,28 @@ import (
 	"github.com/kenesparta/fullcycle-ratelimiter/internal/entity"
 )
 
-type RegisterIPRequest struct {
+type RegisterIP struct {
 	ipRepo entity.IPRepository
 	config *config.Config
 }
 
-func NewRegisterIPRequest(
+func NewRegisterIPUseCase(
 	ipRepo entity.IPRepository,
 	config *config.Config,
-) *RegisterIPRequest {
-	return &RegisterIPRequest{
+) *RegisterIP {
+	return &RegisterIP{
 		ipRepo: ipRepo,
 		config: config,
 	}
 }
 
-// Execute This saves a new request depending on IP or APIToken.
+// Execute This saves a new request depending on IP.
 // If we have a request from an endpoint that does not have API Token, we persist the request using the IP
 //  1. We need to confirm if the IP has been blocked for exceeding the maximum number of requests.
 //  2. We save the IP in the database using the RateLimiter.Allow() and using the environmental variables
 //     or if we already have the same IP, we update the requests array.
 //  4. Finally, we execute the validation and update/insert the data in the database.
-func (ipr *RegisterIPRequest) Execute(
+func (ipr *RegisterIP) Execute(
 	ctx context.Context,
 	input dto.IPRequestSave,
 ) (dto.IPRequestResult, error) {
@@ -39,7 +39,7 @@ func (ipr *RegisterIPRequest) Execute(
 		return dto.IPRequestResult{}, blockedErr
 	}
 
-	if status == entity.StatusBlocked {
+	if status == entity.StatusIPBlocked {
 		log.Println("ip is blocked due to exceeding the maximum number of requests")
 		return dto.IPRequestResult{}, entity.ErrIPExceededAmountRequest
 	}

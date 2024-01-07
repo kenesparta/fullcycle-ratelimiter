@@ -3,7 +3,7 @@ package entity
 const (
 	IPPrefixRateKey     = "rate:ip"
 	IPPrefixDurationKey = "duration:ip"
-	StatusBlocked       = "IPBlocked"
+	StatusIPBlocked     = "IPBlocked"
 )
 
 type IP struct {

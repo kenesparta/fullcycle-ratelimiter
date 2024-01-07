@@ -3,120 +3,71 @@ package database
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
-	"log"
-	"time"
-
 	"github.com/kenesparta/fullcycle-ratelimiter/internal/dto"
 	"github.com/kenesparta/fullcycle-ratelimiter/internal/entity"
 	"github.com/redis/go-redis/v9"
+	"log"
 )
 
-type IPRedis struct {
+type APITokenRedis struct {
 	redisCli *redis.Client
 }
 
-func NewIPRedis(redisCli *redis.Client) *IPRedis {
-	return &IPRedis{redisCli: redisCli}
+func NewAPITokenRedis(redisCli *redis.Client) *APITokenRedis {
+	return &APITokenRedis{redisCli: redisCli}
 }
 
-func (ip *IPRedis) UpsertRequest(ctx context.Context, key string, rl *entity.RateLimiter) error {
-	req := dto.IPRequestDB{
-		MaxRequests:   rl.MaxRequests,
-		TimeWindowSec: rl.TimeWindowSec,
-		Requests: func() []int64 {
-			reqInt := make([]int64, 0)
-			for _, r := range rl.Requests {
-				reqInt = append(reqInt, r.Unix())
-			}
-			return reqInt
-		}(),
+func (at *APITokenRedis) Save(ctx context.Context, token *entity.APIToken) (string, error) {
+	req := dto.APITokenInput{
+		MaxRequests:     token.RateLimiter.MaxRequests,
+		TimeWindowSec:   token.RateLimiter.TimeWindowSec,
+		BlockedDuration: token.BlockedDuration,
 	}
 
 	jsonReq, marErr := json.Marshal(req)
 	if marErr != nil {
-		log.Println("error marshaling IP")
-		return marErr
+		log.Println("error marshaling API Token")
+		return "", marErr
 	}
 
-	redisErr := ip.redisCli.Set(ctx, createRatePrefix(key), jsonReq, 0).Err()
-	if redisErr != nil {
-		log.Println("error inserting")
-		return redisErr
-	}
-
-	return nil
-}
-
-// SaveBlockedDuration Stores the blocked duration amount by key
-func (ip *IPRedis) SaveBlockedDuration(ctx context.Context, key string, BlockedDuration int64) error {
-	redisErr := ip.redisCli.Set(
+	if redisErr := at.redisCli.Set(
 		ctx,
-		createDurationPrefix(key),
-		entity.StatusBlocked,
-		time.Second*time.Duration(BlockedDuration),
-	).Err()
-	if redisErr != nil {
-		log.Println("error inserting SaveBlockedDuration")
-		return redisErr
+		token.Value(),
+		jsonReq,
+		0,
+	).Err(); redisErr != nil {
+		log.Println("error inserting API Token value")
+		return "", redisErr
 	}
 
+	return token.Value(), nil
+}
+
+func (at *APITokenRedis) Get(ctx context.Context, value string) entity.APIToken {
+	return entity.APIToken{}
+}
+
+func (at *APITokenRedis) UpsertRequest(ctx context.Context, key string, rl *entity.RateLimiter) error {
 	return nil
 }
 
-// GetBlockedDuration Obtain the blocked duration by key
-func (ip *IPRedis) GetBlockedDuration(ctx context.Context, key string) (string, error) {
-	val, getErr := ip.redisCli.Get(ctx, createDurationPrefix(key)).Result()
-	if errors.Is(getErr, redis.Nil) {
-		log.Println("IP key does not exist")
-		return "", nil
-	}
-	if getErr != nil {
-		return "", getErr
-	}
-
-	return val, nil
+func (at *APITokenRedis) SaveBlockedDuration(ctx context.Context, key string, BlockedDuration int64) error {
+	return nil
 }
 
-// GetRequest reads the stored array of request
-func (ip *IPRedis) GetRequest(ctx context.Context, key string) (*entity.RateLimiter, error) {
-	val, getErr := ip.redisCli.Get(ctx, createRatePrefix(key)).Result()
-	if errors.Is(getErr, redis.Nil) {
-		log.Println("IP key does not exist")
-		return &entity.RateLimiter{
-			Requests:      make([]time.Time, 0),
-			TimeWindowSec: 0,
-			MaxRequests:   0,
-		}, nil
-	}
-	if getErr != nil {
-		return nil, getErr
-	}
-
-	var rateLimiter dto.IPRequestDB
-	if err := json.Unmarshal([]byte(val), &rateLimiter); err != nil {
-		log.Println("IP RateLimiter unmarshal error")
-		return &entity.RateLimiter{}, nil
-	}
-
-	return &entity.RateLimiter{
-		Requests: func() []time.Time {
-			reqTimeStamp := make([]time.Time, 0)
-			for _, rr := range rateLimiter.Requests {
-				reqTimeStamp = append(reqTimeStamp, time.Unix(rr, 0))
-			}
-			return reqTimeStamp
-		}(),
-		TimeWindowSec: rateLimiter.TimeWindowSec,
-		MaxRequests:   rateLimiter.MaxRequests,
-	}, nil
+func (at *APITokenRedis) GetBlockedDuration(ctx context.Context, key string) (string, error) {
+	return "", nil
 }
 
-func createDurationPrefix(ip string) string {
-	return fmt.Sprintf("%s:%s", entity.IPPrefixDurationKey, ip)
+func (at *APITokenRedis) GetRequest(ctx context.Context, key string) (*entity.RateLimiter, error) {
+	return nil, nil
 }
 
-func createRatePrefix(ip string) string {
-	return fmt.Sprintf("%s:%s", entity.IPPrefixRateKey, ip)
+func createAPITokenDurationPrefix(ip string) string {
+	return fmt.Sprintf("%s:%s", entity.APITokenPrefixDurationKey, ip)
+}
+
+func createAPITokenRatePrefix(ip string) string {
+	return fmt.Sprintf("%s:%s", entity.APITokenPrefixRateKey, ip)
 }

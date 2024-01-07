@@ -1,4 +1,0 @@
-GET {{url}}/hello-world
-Content-Type: application/json
-
-###

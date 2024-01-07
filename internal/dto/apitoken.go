@@ -6,5 +6,10 @@ type APITokenInput struct {
 	BlockedDuration int64 `json:"blocked_duration"`
 }
 
+type APITokenCreateOutput struct {
+	TokenValue string `json:"token"`
+}
+
 type APITokenOutput struct {
+	Allow bool
 }

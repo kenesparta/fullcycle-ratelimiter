@@ -17,7 +17,7 @@ func NewCreateAPITokenUseCase(apitokenRepo entity.APITokenRepository) *CreateAPI
 }
 
 // Execute Creates a new API token with its own value and persists it
-func (cr *CreateAPITokenUseCase) Execute(ctx context.Context, input dto.APITokenInput) error {
+func (cr *CreateAPITokenUseCase) Execute(ctx context.Context, input dto.APITokenInput) (dto.APITokenCreateOutput, error) {
 	apiToken := entity.APIToken{
 		BlockedDuration: input.BlockedDuration,
 		RateLimiter: entity.RateLimiter{
@@ -28,14 +28,17 @@ func (cr *CreateAPITokenUseCase) Execute(ctx context.Context, input dto.APIToken
 
 	if err := apiToken.GenerateValue(); err != nil {
 		log.Printf("Error on CreateAPITokenUseCase generating token value: %s\n", err.Error())
-		return err
+		return dto.APITokenCreateOutput{}, err
 	}
 
-	if err := cr.apitokenRepo.Save(ctx, &apiToken); err != nil {
-		log.Printf("Error on CreateAPITokenUseCase saving data: %s\n", err.Error())
-		return err
+	tokenValue, saveErr := cr.apitokenRepo.Save(ctx, &apiToken)
+	if saveErr != nil {
+		log.Printf("Error on CreateAPITokenUseCase saving data: %s\n", saveErr.Error())
+		return dto.APITokenCreateOutput{}, saveErr
 	}
 
-	log.Println("Saving with success")
-	return nil
+	log.Println("Saved with success")
+	return dto.APITokenCreateOutput{
+		TokenValue: tokenValue,
+	}, nil
 }

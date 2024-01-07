@@ -2,12 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/redis/go-redis/v9"
 	"log"
 	"net/http"
 
+	"github.com/kenesparta/fullcycle-ratelimiter/internal/infra/database"
+	internalHandler "github.com/kenesparta/fullcycle-ratelimiter/internal/infra/handler"
 	"github.com/kenesparta/fullcycle-ratelimiter/internal/infra/webserver"
 	"github.com/kenesparta/fullcycle-ratelimiter/internal/infra/webserver/middleware"
+	"github.com/redis/go-redis/v9"
 )
 
 func main() {
@@ -19,14 +21,15 @@ func main() {
 		},
 	)
 
-	ipHandler := NewIPHandler()
 	newWebServer := webserver.NewWebServer(cfg.Config.App.Port)
 	newWebServer.InternalMiddleware = middleware.Middleware{
 		RedisClient: redisCli,
 		Config:      cfg.Config,
 	}
+	apiTokenHandler := internalHandler.NewAPITokenHandler(database.NewAPITokenRedis(redisCli))
 
-	newWebServer.AddHandler(http.MethodGet, "/hello-world", ipHandler.HelloWorld)
+	newWebServer.AddHandler(http.MethodGet, "/hello-world", internalHandler.HelloWorld)
+	newWebServer.AddHandler(http.MethodPost, "/api-token", apiTokenHandler.CreateToken)
 	log.Println("Starting web server on port", cfg.Config.App.Port)
 	newWebServer.Start()
 }
