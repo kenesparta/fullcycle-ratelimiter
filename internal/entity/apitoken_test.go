@@ -6,7 +6,7 @@ import (
 )
 
 func TestGenerateValue(t *testing.T) {
-	at := &APIToken{}
+	at := &APIKey{}
 	err := at.GenerateValue()
 
 	require.NoError(t, err, "GenerateValue should not return an error")

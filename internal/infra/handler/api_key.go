@@ -9,24 +9,24 @@ import (
 	"net/http"
 )
 
-type APITokenHandler struct {
-	repo entity.APITokenRepository
+type APIKeyHandler struct {
+	repo entity.APIKeyRepository
 }
 
-func NewAPITokenHandler(repo entity.APITokenRepository) *APITokenHandler {
-	return &APITokenHandler{repo: repo}
+func NewAPIKeyHandler(repo entity.APIKeyRepository) *APIKeyHandler {
+	return &APIKeyHandler{repo: repo}
 }
 
-func (at *APITokenHandler) CreateToken(w http.ResponseWriter, r *http.Request) {
-	input := dto.APITokenInput{}
+func (at *APIKeyHandler) CreateToken(w http.ResponseWriter, r *http.Request) {
+	input := dto.APIKeyInput{}
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		log.Println("error decoding input data:", err.Error())
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	apiTokenUseCase := usecase.NewCreateAPITokenUseCase(at.repo)
-	result, execErr := apiTokenUseCase.Execute(r.Context(), input)
+	apiKeyUseCase := usecase.NewCreateAPIKeyUseCase(at.repo)
+	result, execErr := apiKeyUseCase.Execute(r.Context(), input)
 	if execErr != nil {
 		log.Println("error decoding input data:", execErr.Error())
 		http.Error(w, execErr.Error(), http.StatusInternalServerError)

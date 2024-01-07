@@ -6,14 +6,14 @@ import (
 )
 
 const (
-	APITokenPrefixRateKey     = "rate:api-token"
-	APITokenPrefixDurationKey = "duration:api-token"
-	APITokenPrefixValueKey    = "value:api-token"
-	StatusAPITokenBlocked     = "APITokenBlocked"
+	APIKeyPrefixRateKey     = "rate:api-key"
+	APIKeyPrefixDurationKey = "duration:api-key"
+	APIKeyPrefixValueKey    = "value:api-key"
+	StatusAPIKeyBlocked     = "APIKeyBlocked"
 )
 
-// APIToken Thi token is related with the token API that we can generate for each client
-type APIToken struct {
+// APIKey Thi token is related with the token API that we can generate for each client
+type APIKey struct {
 	value string
 
 	// BlockedDuration is the number of SECONDS that it blocks the token if it reaches the RateLimiter.MaxRequests each
@@ -22,7 +22,7 @@ type APIToken struct {
 	RateLimiter     RateLimiter
 }
 
-func (at *APIToken) GenerateValue() error {
+func (at *APIKey) GenerateValue() error {
 	bytes, err := generateRandomBytes(32)
 	if err != nil {
 		return err
@@ -31,11 +31,11 @@ func (at *APIToken) GenerateValue() error {
 	return nil
 }
 
-func (at *APIToken) SetValue(value string) {
+func (at *APIKey) SetValue(value string) {
 	at.value = value
 }
 
-func (at *APIToken) Value() string {
+func (at *APIKey) Value() string {
 	return at.value
 }
 

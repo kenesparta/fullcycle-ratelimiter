@@ -55,18 +55,18 @@ func (mr *MockcommonRepoMockRecorder) GetBlockedDuration(ctx, key any) *gomock.C
 }
 
 // GetRequest mocks base method.
-func (m *MockcommonRepo) GetRequest(ctx context.Context, value string) (*entity.RateLimiter, error) {
+func (m *MockcommonRepo) GetRequest(ctx context.Context, key string) (*entity.RateLimiter, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetRequest", ctx, value)
+	ret := m.ctrl.Call(m, "GetRequest", ctx, key)
 	ret0, _ := ret[0].(*entity.RateLimiter)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetRequest indicates an expected call of GetRequest.
-func (mr *MockcommonRepoMockRecorder) GetRequest(ctx, value any) *gomock.Call {
+func (mr *MockcommonRepoMockRecorder) GetRequest(ctx, key any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequest", reflect.TypeOf((*MockcommonRepo)(nil).GetRequest), ctx, value)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequest", reflect.TypeOf((*MockcommonRepo)(nil).GetRequest), ctx, key)
 }
 
 // SaveBlockedDuration mocks base method.
@@ -97,45 +97,45 @@ func (mr *MockcommonRepoMockRecorder) UpsertRequest(ctx, key, rl any) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertRequest", reflect.TypeOf((*MockcommonRepo)(nil).UpsertRequest), ctx, key, rl)
 }
 
-// MockAPITokenRepository is a mock of APITokenRepository interface.
-type MockAPITokenRepository struct {
+// MockAPIKeyRepository is a mock of APIKeyRepository interface.
+type MockAPIKeyRepository struct {
 	ctrl     *gomock.Controller
-	recorder *MockAPITokenRepositoryMockRecorder
+	recorder *MockAPIKeyRepositoryMockRecorder
 }
 
-// MockAPITokenRepositoryMockRecorder is the mock recorder for MockAPITokenRepository.
-type MockAPITokenRepositoryMockRecorder struct {
-	mock *MockAPITokenRepository
+// MockAPIKeyRepositoryMockRecorder is the mock recorder for MockAPIKeyRepository.
+type MockAPIKeyRepositoryMockRecorder struct {
+	mock *MockAPIKeyRepository
 }
 
-// NewMockAPITokenRepository creates a new mock instance.
-func NewMockAPITokenRepository(ctrl *gomock.Controller) *MockAPITokenRepository {
-	mock := &MockAPITokenRepository{ctrl: ctrl}
-	mock.recorder = &MockAPITokenRepositoryMockRecorder{mock}
+// NewMockAPIKeyRepository creates a new mock instance.
+func NewMockAPIKeyRepository(ctrl *gomock.Controller) *MockAPIKeyRepository {
+	mock := &MockAPIKeyRepository{ctrl: ctrl}
+	mock.recorder = &MockAPIKeyRepositoryMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockAPITokenRepository) EXPECT() *MockAPITokenRepositoryMockRecorder {
+func (m *MockAPIKeyRepository) EXPECT() *MockAPIKeyRepositoryMockRecorder {
 	return m.recorder
 }
 
 // Get mocks base method.
-func (m *MockAPITokenRepository) Get(ctx context.Context, value string) entity.APIToken {
+func (m *MockAPIKeyRepository) Get(ctx context.Context, value string) entity.APIKey {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", ctx, value)
-	ret0, _ := ret[0].(entity.APIToken)
+	ret0, _ := ret[0].(entity.APIKey)
 	return ret0
 }
 
 // Get indicates an expected call of Get.
-func (mr *MockAPITokenRepositoryMockRecorder) Get(ctx, value any) *gomock.Call {
+func (mr *MockAPIKeyRepositoryMockRecorder) Get(ctx, value any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockAPITokenRepository)(nil).Get), ctx, value)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockAPIKeyRepository)(nil).Get), ctx, value)
 }
 
 // GetBlockedDuration mocks base method.
-func (m *MockAPITokenRepository) GetBlockedDuration(ctx context.Context, key string) (string, error) {
+func (m *MockAPIKeyRepository) GetBlockedDuration(ctx context.Context, key string) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetBlockedDuration", ctx, key)
 	ret0, _ := ret[0].(string)
@@ -144,42 +144,43 @@ func (m *MockAPITokenRepository) GetBlockedDuration(ctx context.Context, key str
 }
 
 // GetBlockedDuration indicates an expected call of GetBlockedDuration.
-func (mr *MockAPITokenRepositoryMockRecorder) GetBlockedDuration(ctx, key any) *gomock.Call {
+func (mr *MockAPIKeyRepositoryMockRecorder) GetBlockedDuration(ctx, key any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlockedDuration", reflect.TypeOf((*MockAPITokenRepository)(nil).GetBlockedDuration), ctx, key)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlockedDuration", reflect.TypeOf((*MockAPIKeyRepository)(nil).GetBlockedDuration), ctx, key)
 }
 
 // GetRequest mocks base method.
-func (m *MockAPITokenRepository) GetRequest(ctx context.Context, value string) (*entity.RateLimiter, error) {
+func (m *MockAPIKeyRepository) GetRequest(ctx context.Context, key string) (*entity.RateLimiter, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetRequest", ctx, value)
+	ret := m.ctrl.Call(m, "GetRequest", ctx, key)
 	ret0, _ := ret[0].(*entity.RateLimiter)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetRequest indicates an expected call of GetRequest.
-func (mr *MockAPITokenRepositoryMockRecorder) GetRequest(ctx, value any) *gomock.Call {
+func (mr *MockAPIKeyRepositoryMockRecorder) GetRequest(ctx, key any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequest", reflect.TypeOf((*MockAPITokenRepository)(nil).GetRequest), ctx, value)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequest", reflect.TypeOf((*MockAPIKeyRepository)(nil).GetRequest), ctx, key)
 }
 
 // Save mocks base method.
-func (m *MockAPITokenRepository) Save(ctx context.Context, token *entity.APIToken) error {
+func (m *MockAPIKeyRepository) Save(ctx context.Context, token *entity.APIKey) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Save", ctx, token)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // Save indicates an expected call of Save.
-func (mr *MockAPITokenRepositoryMockRecorder) Save(ctx, token any) *gomock.Call {
+func (mr *MockAPIKeyRepositoryMockRecorder) Save(ctx, token any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Save", reflect.TypeOf((*MockAPITokenRepository)(nil).Save), ctx, token)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Save", reflect.TypeOf((*MockAPIKeyRepository)(nil).Save), ctx, token)
 }
 
 // SaveBlockedDuration mocks base method.
-func (m *MockAPITokenRepository) SaveBlockedDuration(ctx context.Context, key string, BlockedDuration int64) error {
+func (m *MockAPIKeyRepository) SaveBlockedDuration(ctx context.Context, key string, BlockedDuration int64) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "SaveBlockedDuration", ctx, key, BlockedDuration)
 	ret0, _ := ret[0].(error)
@@ -187,13 +188,13 @@ func (m *MockAPITokenRepository) SaveBlockedDuration(ctx context.Context, key st
 }
 
 // SaveBlockedDuration indicates an expected call of SaveBlockedDuration.
-func (mr *MockAPITokenRepositoryMockRecorder) SaveBlockedDuration(ctx, key, BlockedDuration any) *gomock.Call {
+func (mr *MockAPIKeyRepositoryMockRecorder) SaveBlockedDuration(ctx, key, BlockedDuration any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SaveBlockedDuration", reflect.TypeOf((*MockAPITokenRepository)(nil).SaveBlockedDuration), ctx, key, BlockedDuration)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SaveBlockedDuration", reflect.TypeOf((*MockAPIKeyRepository)(nil).SaveBlockedDuration), ctx, key, BlockedDuration)
 }
 
 // UpsertRequest mocks base method.
-func (m *MockAPITokenRepository) UpsertRequest(ctx context.Context, key string, rl *entity.RateLimiter) error {
+func (m *MockAPIKeyRepository) UpsertRequest(ctx context.Context, key string, rl *entity.RateLimiter) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpsertRequest", ctx, key, rl)
 	ret0, _ := ret[0].(error)
@@ -201,9 +202,9 @@ func (m *MockAPITokenRepository) UpsertRequest(ctx context.Context, key string, 
 }
 
 // UpsertRequest indicates an expected call of UpsertRequest.
-func (mr *MockAPITokenRepositoryMockRecorder) UpsertRequest(ctx, key, rl any) *gomock.Call {
+func (mr *MockAPIKeyRepositoryMockRecorder) UpsertRequest(ctx, key, rl any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertRequest", reflect.TypeOf((*MockAPITokenRepository)(nil).UpsertRequest), ctx, key, rl)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertRequest", reflect.TypeOf((*MockAPIKeyRepository)(nil).UpsertRequest), ctx, key, rl)
 }
 
 // MockIPRepository is a mock of IPRepository interface.
@@ -245,18 +246,18 @@ func (mr *MockIPRepositoryMockRecorder) GetBlockedDuration(ctx, key any) *gomock
 }
 
 // GetRequest mocks base method.
-func (m *MockIPRepository) GetRequest(ctx context.Context, value string) (*entity.RateLimiter, error) {
+func (m *MockIPRepository) GetRequest(ctx context.Context, key string) (*entity.RateLimiter, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetRequest", ctx, value)
+	ret := m.ctrl.Call(m, "GetRequest", ctx, key)
 	ret0, _ := ret[0].(*entity.RateLimiter)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetRequest indicates an expected call of GetRequest.
-func (mr *MockIPRepositoryMockRecorder) GetRequest(ctx, value any) *gomock.Call {
+func (mr *MockIPRepositoryMockRecorder) GetRequest(ctx, key any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequest", reflect.TypeOf((*MockIPRepository)(nil).GetRequest), ctx, value)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequest", reflect.TypeOf((*MockIPRepository)(nil).GetRequest), ctx, key)
 }
 
 // SaveBlockedDuration mocks base method.

@@ -38,9 +38,8 @@ func TestRegisterIPRequest_Execute(t *testing.T) {
 		{
 			name: "with api token and result in getRequest",
 			input: dto.IPRequestSave{
-				IP:       "127.0.0.1",
-				APIToken: "6d7b8095a5c7414d3a7a6a38d83403c8c859841dfd036b10f3b2c203a2a70392",
-				TimeAdd:  startTime,
+				IP:      "127.0.0.1",
+				TimeAdd: startTime,
 			},
 			getRequest: func() *entity.RateLimiter {
 				rt := &entity.RateLimiter{}
@@ -56,9 +55,8 @@ func TestRegisterIPRequest_Execute(t *testing.T) {
 		{
 			name: "with api token and result in getRequest",
 			input: dto.IPRequestSave{
-				IP:       "192.168.0.166",
-				APIToken: "3aaf2c6cead4fad72c5e1d944b84939f632e6b471483ee451675a703815f2251",
-				TimeAdd:  startTime,
+				IP:      "192.168.0.166",
+				TimeAdd: startTime,
 			},
 			getRequest: func() *entity.RateLimiter {
 				rt := &entity.RateLimiter{}

@@ -26,10 +26,10 @@ func main() {
 		RedisClient: redisCli,
 		Config:      cfg.Config,
 	}
-	apiTokenHandler := internalHandler.NewAPITokenHandler(database.NewAPITokenRedis(redisCli))
+	apikeyHandler := internalHandler.NewAPIKeyHandler(database.NewAPIKeyRedis(redisCli))
 
 	newWebServer.AddHandler(http.MethodGet, "/hello-world", internalHandler.HelloWorld)
-	newWebServer.AddHandler(http.MethodPost, "/api-token", apiTokenHandler.CreateToken)
+	newWebServer.AddHandler(http.MethodPost, "/api-key", apikeyHandler.CreateToken)
 	log.Println("Starting web server on port", cfg.Config.App.Port)
 	newWebServer.Start()
 }

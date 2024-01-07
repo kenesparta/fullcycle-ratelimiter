@@ -20,12 +20,12 @@ type commonRepo interface {
 	GetRequest(ctx context.Context, key string) (*RateLimiter, error)
 }
 
-type APITokenRepository interface {
-	// Save Persists a new APIToken with the initial values of MaxRequest and TimeWindowSec
-	Save(ctx context.Context, token *APIToken) (string, error)
+type APIKeyRepository interface {
+	// Save Persists a new APIKey with the initial values of MaxRequest and TimeWindowSec
+	Save(ctx context.Context, token *APIKey) (string, error)
 
-	// Get Obtains the stored APIToken
-	Get(ctx context.Context, value string) APIToken
+	// Get Obtains the stored APIKey
+	Get(ctx context.Context, value string) APIKey
 
 	commonRepo
 }

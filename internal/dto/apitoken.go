@@ -1,15 +1,15 @@
 package dto
 
-type APITokenInput struct {
+type APIKeyInput struct {
 	MaxRequests     int   `json:"max_requests"`
 	TimeWindowSec   int64 `json:"time_window"`
 	BlockedDuration int64 `json:"blocked_duration"`
 }
 
-type APITokenCreateOutput struct {
-	TokenValue string `json:"api-token"`
+type APIKeyCreateOutput struct {
+	TokenValue string `json:"api-key"`
 }
 
-type APITokenOutput struct {
+type APIKeyOutput struct {
 	Allow bool
 }

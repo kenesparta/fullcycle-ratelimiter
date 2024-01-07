@@ -6,14 +6,14 @@ import (
 	"github.com/kenesparta/fullcycle-ratelimiter/internal/entity"
 )
 
-type RegisterAPIToken struct {
-	apiRepo entity.APITokenRepository
+type RegisterAPIKey struct {
+	apiRepo entity.APIKeyRepository
 }
 
-func NewRegisterAPIToken(
-	apiRepo entity.APITokenRepository,
-) *RegisterAPIToken {
-	return &RegisterAPIToken{
+func NewRegisterAPIKey(
+	apiRepo entity.APIKeyRepository,
+) *RegisterAPIKey {
+	return &RegisterAPIKey{
 		apiRepo: apiRepo,
 	}
 }
@@ -24,11 +24,11 @@ func NewRegisterAPIToken(
 //  2. We save the API token in the database using the RateLimiter.Allow() and using the variables
 //     or if we already have the same IP, we update the requests array.
 //  4. Finally, we execute the validation and update/insert the data in the database.
-func (ipr *RegisterAPIToken) Execute(
+func (ipr *RegisterAPIKey) Execute(
 	ctx context.Context,
 	input dto.IPRequestSave,
-) (dto.APITokenOutput, error) {
-	return dto.APITokenOutput{
+) (dto.APIKeyOutput, error) {
+	return dto.APIKeyOutput{
 		Allow: true,
 	}, nil
 }
