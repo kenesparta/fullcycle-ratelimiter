@@ -16,7 +16,7 @@ func NewCreateAPIKeyUseCase(apiKeyRepo entity.APIKeyRepository) *CreateAPIKeyUse
 	return &CreateAPIKeyUseCase{apiKeyRepo: apiKeyRepo}
 }
 
-// Execute Creates a new API token with its own value and persists it
+// Execute Creates a new API Key with its own value and persists it
 func (cr *CreateAPIKeyUseCase) Execute(ctx context.Context, input dto.APIKeyInput) (dto.APIKeyCreateOutput, error) {
 	apiKey := entity.APIKey{
 		BlockedDuration: input.BlockedDuration,
@@ -27,11 +27,11 @@ func (cr *CreateAPIKeyUseCase) Execute(ctx context.Context, input dto.APIKeyInpu
 	}
 
 	if err := apiKey.GenerateValue(); err != nil {
-		log.Printf("Error on CreateAPIKeyUseCase generating token value: %s\n", err.Error())
+		log.Printf("Error on CreateAPIKeyUseCase generating key value: %s\n", err.Error())
 		return dto.APIKeyCreateOutput{}, err
 	}
 
-	tokenValue, saveErr := cr.apiKeyRepo.Save(ctx, &apiKey)
+	keyValue, saveErr := cr.apiKeyRepo.Save(ctx, &apiKey)
 	if saveErr != nil {
 		log.Printf("Error on CreateAPIKeyUseCase saving data: %s\n", saveErr.Error())
 		return dto.APIKeyCreateOutput{}, saveErr
@@ -39,6 +39,6 @@ func (cr *CreateAPIKeyUseCase) Execute(ctx context.Context, input dto.APIKeyInpu
 
 	log.Println("Saved with success")
 	return dto.APIKeyCreateOutput{
-		TokenValue: tokenValue,
+		KeyValue: keyValue,
 	}, nil
 }

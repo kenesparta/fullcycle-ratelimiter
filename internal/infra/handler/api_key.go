@@ -17,7 +17,7 @@ func NewAPIKeyHandler(repo entity.APIKeyRepository) *APIKeyHandler {
 	return &APIKeyHandler{repo: repo}
 }
 
-func (at *APIKeyHandler) CreateToken(w http.ResponseWriter, r *http.Request) {
+func (at *APIKeyHandler) CreateAPIKey(w http.ResponseWriter, r *http.Request) {
 	input := dto.APIKeyInput{}
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		log.Println("error decoding input data:", err.Error())

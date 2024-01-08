@@ -97,7 +97,7 @@ func (ip *IPRedis) GetRequest(ctx context.Context, key string) (*entity.RateLimi
 	var rateLimiter dto.IPRequestDB
 	if err := json.Unmarshal([]byte(val), &rateLimiter); err != nil {
 		log.Println("IP RateLimiter unmarshal error")
-		return &entity.RateLimiter{}, nil
+		return &entity.RateLimiter{}, err
 	}
 
 	return &entity.RateLimiter{

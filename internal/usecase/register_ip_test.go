@@ -36,7 +36,7 @@ func TestRegisterIPRequest_Execute(t *testing.T) {
 		expected   dto.IPRequestResult
 	}{
 		{
-			name: "with api token and result in getRequest",
+			name: "with api key and result in getRequest",
 			input: dto.IPRequestSave{
 				IP:      "127.0.0.1",
 				TimeAdd: startTime,
@@ -53,7 +53,7 @@ func TestRegisterIPRequest_Execute(t *testing.T) {
 			},
 		},
 		{
-			name: "with api token and result in getRequest",
+			name: "with api key and result in getRequest",
 			input: dto.IPRequestSave{
 				IP:      "192.168.0.166",
 				TimeAdd: startTime,

@@ -22,10 +22,10 @@ type commonRepo interface {
 
 type APIKeyRepository interface {
 	// Save Persists a new APIKey with the initial values of MaxRequest and TimeWindowSec
-	Save(ctx context.Context, token *APIKey) (string, error)
+	Save(ctx context.Context, key *APIKey) (string, error)
 
 	// Get Obtains the stored APIKey
-	Get(ctx context.Context, value string) APIKey
+	Get(ctx context.Context, value string) (*APIKey, error)
 
 	commonRepo
 }

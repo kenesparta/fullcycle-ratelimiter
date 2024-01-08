@@ -58,3 +58,15 @@ func (rl *RateLimiter) removeOldRequests(fromTime time.Time) {
 func (rl *RateLimiter) AddRequests(request time.Time) {
 	rl.Requests = append(rl.Requests, request)
 }
+
+func (rl *RateLimiter) Validate() error {
+	if rl.MaxRequests == 0 {
+		return ErrRateLimiterTimeWindow
+	}
+
+	if rl.TimeWindowSec == 0 {
+		return ErrRateLimiterTimeWindow
+	}
+
+	return nil
+}

@@ -10,16 +10,18 @@ const (
 	APIKeyPrefixDurationKey = "duration:api-key"
 	APIKeyPrefixValueKey    = "value:api-key"
 	StatusAPIKeyBlocked     = "APIKeyBlocked"
+	APIKeyHeaderName        = "API_KEY"
 )
 
-// APIKey Thi token is related with the token API that we can generate for each client
+// APIKey This key is related with the API Key that we can generate for each client
 type APIKey struct {
 	value string
 
-	// BlockedDuration is the number of SECONDS that it blocks the token if it reaches the RateLimiter.MaxRequests each
-	// RateLimiter.TimeWindowSec amount of seconds.
+	// BlockedDuration is the number of SECONDS that it blocks the API Key if it reaches the RateLimiter.MaxRequests
 	BlockedDuration int64
-	RateLimiter     RateLimiter
+
+	// RateLimiter.TimeWindowSec amount of seconds.
+	RateLimiter RateLimiter
 }
 
 func (at *APIKey) GenerateValue() error {
@@ -37,6 +39,18 @@ func (at *APIKey) SetValue(value string) {
 
 func (at *APIKey) Value() string {
 	return at.value
+}
+
+func (at *APIKey) Validate() error {
+	if at.BlockedDuration == 0 {
+		return ErrBlockedTimeDuration
+	}
+
+	if err := at.RateLimiter.Validate(); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func generateRandomBytes(length int) ([]byte, error) {

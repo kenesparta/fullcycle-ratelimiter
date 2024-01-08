@@ -29,7 +29,7 @@ func main() {
 	apikeyHandler := internalHandler.NewAPIKeyHandler(database.NewAPIKeyRedis(redisCli))
 
 	newWebServer.AddHandler(http.MethodGet, "/hello-world", internalHandler.HelloWorld)
-	newWebServer.AddHandler(http.MethodPost, "/api-key", apikeyHandler.CreateToken)
+	newWebServer.AddHandler(http.MethodPost, "/api-key", apikeyHandler.CreateAPIKey)
 	log.Println("Starting web server on port", cfg.Config.App.Port)
 	newWebServer.Start()
 }

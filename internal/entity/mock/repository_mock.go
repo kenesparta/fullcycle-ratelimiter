@@ -121,11 +121,12 @@ func (m *MockAPIKeyRepository) EXPECT() *MockAPIKeyRepositoryMockRecorder {
 }
 
 // Get mocks base method.
-func (m *MockAPIKeyRepository) Get(ctx context.Context, value string) entity.APIKey {
+func (m *MockAPIKeyRepository) Get(ctx context.Context, value string) (*entity.APIKey, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", ctx, value)
-	ret0, _ := ret[0].(entity.APIKey)
-	return ret0
+	ret0, _ := ret[0].(*entity.APIKey)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // Get indicates an expected call of Get.
@@ -165,18 +166,18 @@ func (mr *MockAPIKeyRepositoryMockRecorder) GetRequest(ctx, key any) *gomock.Cal
 }
 
 // Save mocks base method.
-func (m *MockAPIKeyRepository) Save(ctx context.Context, token *entity.APIKey) (string, error) {
+func (m *MockAPIKeyRepository) Save(ctx context.Context, key *entity.APIKey) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Save", ctx, token)
+	ret := m.ctrl.Call(m, "Save", ctx, key)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Save indicates an expected call of Save.
-func (mr *MockAPIKeyRepositoryMockRecorder) Save(ctx, token any) *gomock.Call {
+func (mr *MockAPIKeyRepositoryMockRecorder) Save(ctx, key any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Save", reflect.TypeOf((*MockAPIKeyRepository)(nil).Save), ctx, token)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Save", reflect.TypeOf((*MockAPIKeyRepository)(nil).Save), ctx, key)
 }
 
 // SaveBlockedDuration mocks base method.
