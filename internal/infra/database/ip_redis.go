@@ -69,7 +69,7 @@ func (ip *IPRedis) SaveBlockedDuration(ctx context.Context, key string, BlockedD
 func (ip *IPRedis) GetBlockedDuration(ctx context.Context, key string) (string, error) {
 	val, getErr := ip.redisCli.Get(ctx, createIPDurationPrefix(key)).Result()
 	if errors.Is(getErr, redis.Nil) {
-		log.Println("IP key does not exist")
+		log.Println("INFO: GetBlockedDuration IP key does not exist")
 		return "", nil
 	}
 	if getErr != nil {
@@ -83,7 +83,7 @@ func (ip *IPRedis) GetBlockedDuration(ctx context.Context, key string) (string, 
 func (ip *IPRedis) GetRequest(ctx context.Context, key string) (*entity.RateLimiter, error) {
 	val, getErr := ip.redisCli.Get(ctx, createIPRatePrefix(key)).Result()
 	if errors.Is(getErr, redis.Nil) {
-		log.Println("IP key does not exist")
+		log.Println("INFO: GetRequest IP key does not exist")
 		return &entity.RateLimiter{
 			Requests:      make([]time.Time, 0),
 			TimeWindowSec: 0,

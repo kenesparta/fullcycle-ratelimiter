@@ -30,10 +30,3 @@ type Config struct {
 	App         App
 	RateLimiter RateLimiter
 }
-
-func NewConfig(c IConfig) (*Config, error) {
-	if err := c.Validate(); err != nil {
-		return nil, err
-	}
-	return c.Get()
-}
