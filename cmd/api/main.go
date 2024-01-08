@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/kenesparta/fullcycle-ratelimiter/config"
 	"github.com/redis/go-redis/v9"
+	"log"
 )
 
 func main() {
@@ -20,5 +21,7 @@ func main() {
 			},
 		),
 	)
+
+	log.Println("Starting web server on port", cfg.App.Port)
 	newWebServer.Start()
 }
