@@ -27,7 +27,7 @@ func NewWebServer(serverPort string) *WebServer {
 	return &WebServer{
 		Router:        chi.NewRouter(),
 		Handlers:      make([]HandlerProps, 0),
-		WebServerPort: fmt.Sprintf(":%s", serverPort),
+		WebServerPort: fmt.Sprintf("0.0.0.0:%s", serverPort),
 	}
 }
 

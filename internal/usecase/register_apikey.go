@@ -36,7 +36,7 @@ func (apk *RegisterAPIKey) Execute(
 		return dto.APIKeyOutput{}, blockedErr
 	}
 
-	if status == entity.StatusIPBlocked {
+	if status == entity.StatusAPIKeyBlocked {
 		log.Println("API key is blocked due to exceeding the maximum number of requests")
 		return dto.APIKeyOutput{}, entity.ErrAPIKeyExceededAmountRequest
 	}

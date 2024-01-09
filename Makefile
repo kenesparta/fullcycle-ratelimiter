@@ -3,7 +3,7 @@ SHELL := /bin/bash
 
 .PHONY: prepare
 prepare:
-	cp .env.example .env
+	cp env.json.example env.json
 
 .PHONY: init
 init:
@@ -16,3 +16,7 @@ build:
 .PHONY: run
 run:
 	docker compose -f docker-compose.yaml up -d --build
+
+.PHONY: build-cli-test
+build-cli-test:
+	GOOS=linux CGO_ENABLED=0 go build -ldflags="-w -s" -o cli-test ./cmd/cli

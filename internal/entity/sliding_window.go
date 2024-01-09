@@ -61,7 +61,7 @@ func (rl *RateLimiter) AddRequests(request time.Time) {
 
 func (rl *RateLimiter) Validate() error {
 	if rl.MaxRequests == 0 {
-		return ErrRateLimiterTimeWindow
+		return ErrRateLimiterMaxRequests
 	}
 
 	if rl.TimeWindowSec == 0 {

@@ -20,7 +20,7 @@ type APIKeyInput struct {
 }
 
 type APIKeyCreateOutput struct {
-	KeyValue string `json:"api-key"`
+	Key string `json:"api_key"`
 }
 
 type APIKeyOutput struct {

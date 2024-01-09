@@ -13,23 +13,32 @@ services:
     ports:
       - "6379:6379"
     networks:
-      - ratelimit
+      - rate-limit
 
-  goapp:
+  go-app:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: goapp
+      dockerfile: Dockerfile-app
+    container_name: go-app
     ports:
       - "8080:8080"
-    volumes:
-      - .:/app
     networks:
-      - ratelimit
+      - rate-limit
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  go-cli-test:
+    build:
+      context: .
+      dockerfile: Dockerfile-cli-test
+    image: go-cli-test
+    container_name: go-cli-test
+    networks:
+      - rate-limit
     depends_on:
       redis:
         condition: service_healthy
 
 networks:
-  ratelimit:
-    driver: bridge
+  rate-limit:

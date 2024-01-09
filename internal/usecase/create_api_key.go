@@ -39,6 +39,6 @@ func (cr *CreateAPIKeyUseCase) Execute(ctx context.Context, input dto.APIKeyInpu
 
 	log.Println("Saved with success")
 	return dto.APIKeyCreateOutput{
-		KeyValue: keyValue,
+		Key: keyValue,
 	}, nil
 }

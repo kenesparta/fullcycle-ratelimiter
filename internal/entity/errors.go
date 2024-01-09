@@ -3,13 +3,14 @@ package entity
 import "errors"
 
 var (
-	ErrExceededRequest          = errors.New("you have reached the maximum number of Requests or actions allowed within a certain time frame")
-	ErrIPExceededAmountRequest  = errors.New("ip has exceeded the maximum amount of request allowed")
-	ErrAPIExceededAmountRequest = errors.New("this API key has exceeded the maximum amount of request allowed")
+	ErrExceededRequest = errors.New("you have reached the maximum number of Requests or actions allowed within a certain time frame")
 
-	ErrAPIKeyExceededAmountRequest = errors.New("your API key has exceeded the maximum amount of request allowed")
+	ErrIPExceededAmountRequest = errors.New("IP - you have reached the maximum number of Requests or actions allowed within a certain time frame - blocked")
 
-	ErrBlockedTimeDuration    = errors.New("blocked time duration should be greater than zero")
+	ErrAPIKeyExceededAmountRequest = errors.New("API TOKEN - you have reached the maximum number of Requests or actions allowed within a certain time frame - blocked")
+
+	ErrBlockedTimeDuration = errors.New("blocked time duration should be greater than zero")
+
 	ErrRateLimiterTimeWindow  = errors.New("rate limiter time window duration should be greater than zero")
 	ErrRateLimiterMaxRequests = errors.New("rate limiter maximum requests should be greater than zero")
 )

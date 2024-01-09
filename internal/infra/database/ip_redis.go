@@ -113,9 +113,9 @@ func (ip *IPRedis) GetRequest(ctx context.Context, key string) (*entity.RateLimi
 }
 
 func createIPDurationPrefix(ip string) string {
-	return fmt.Sprintf("%s:%s", entity.IPPrefixDurationKey, ip)
+	return fmt.Sprintf("%s_%s", entity.IPPrefixDurationKey, ip)
 }
 
 func createIPRatePrefix(ip string) string {
-	return fmt.Sprintf("%s:%s", entity.IPPrefixRateKey, ip)
+	return fmt.Sprintf("%s_%s", entity.IPPrefixRateKey, ip)
 }

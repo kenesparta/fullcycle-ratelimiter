@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"github.com/kenesparta/fullcycle-ratelimiter/internal/entity"
 	"net/http"
 )
 
@@ -10,10 +9,9 @@ type StrategyMiddleware interface {
 }
 
 func Factory(apiKey string, m *Middleware) StrategyMiddleware {
-	switch apiKey {
-	case entity.APIKeyHeaderName:
+	if apiKey != "" {
 		return &APIKeyMiddleware{RedisClient: m.RedisClient, ApiKey: apiKey}
-	default:
-		return &IPMiddleware{RedisClient: m.RedisClient, Config: m.Config}
 	}
+
+	return &IPMiddleware{RedisClient: m.RedisClient, Config: m.Config}
 }

@@ -103,7 +103,7 @@ func (at *APIKeyRedis) SaveBlockedDuration(ctx context.Context, key string, Bloc
 	if redisErr := at.redisCli.Set(
 		ctx,
 		createAPIKeyDurationPrefix(key),
-		entity.StatusIPBlocked,
+		entity.StatusAPIKeyBlocked,
 		time.Second*time.Duration(BlockedDuration),
 	).Err(); redisErr != nil {
 		log.Println("error inserting SaveBlockedDuration on API Key")
@@ -161,9 +161,9 @@ func (at *APIKeyRedis) GetRequest(ctx context.Context, key string) (*entity.Rate
 }
 
 func createAPIKeyDurationPrefix(key string) string {
-	return fmt.Sprintf("%s:%s", entity.APIKeyPrefixDurationKey, key)
+	return fmt.Sprintf("%s_%s", entity.APIKeyPrefixDurationKey, key)
 }
 
 func createAPIKeyRatePrefix(key string) string {
-	return fmt.Sprintf("%s:%s", entity.APIKeyPrefixRateKey, key)
+	return fmt.Sprintf("%s_%s", entity.APIKeyPrefixRateKey, key)
 }

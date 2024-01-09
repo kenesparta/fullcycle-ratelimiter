@@ -25,8 +25,8 @@ func (tk *APIKeyMiddleware) Execute(w http.ResponseWriter, r *http.Request) erro
 		Value:   tk.ApiKey,
 		TimeAdd: time.Now(),
 	})
-	if errors.Is(execErr, entity.ErrIPExceededAmountRequest) {
-		log.Printf("Error executing NewRegisterAPIKeyUseCase: %s\n", execErr.Error())
+	if errors.Is(execErr, entity.ErrAPIKeyExceededAmountRequest) {
+		log.Printf("Error executing ErrRateLimiterMaxRequests: %s\n", execErr.Error())
 		http.Error(w, execErr.Error(), http.StatusTooManyRequests)
 		return execErr
 	}
@@ -37,8 +37,8 @@ func (tk *APIKeyMiddleware) Execute(w http.ResponseWriter, r *http.Request) erro
 	}
 
 	if !execute.Allow {
-		log.Printf("Too many request: %s\n", entity.ErrExceededRequest.Error())
-		http.Error(w, entity.ErrExceededRequest.Error(), http.StatusTooManyRequests)
+		log.Printf("Too many request: %s\n", entity.ErrAPIKeyExceededAmountRequest.Error())
+		http.Error(w, entity.ErrAPIKeyExceededAmountRequest.Error(), http.StatusTooManyRequests)
 		return errors.New("too many request")
 	}
 
