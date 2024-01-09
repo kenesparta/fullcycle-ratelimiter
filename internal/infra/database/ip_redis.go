@@ -51,14 +51,13 @@ func (ip *IPRedis) UpsertRequest(ctx context.Context, key string, rl *entity.Rat
 
 // SaveBlockedDuration Stores the blocked duration amount by key
 func (ip *IPRedis) SaveBlockedDuration(ctx context.Context, key string, BlockedDuration int64) error {
-	redisErr := ip.redisCli.Set(
+	if redisErr := ip.redisCli.Set(
 		ctx,
 		createIPDurationPrefix(key),
 		entity.StatusIPBlocked,
 		time.Second*time.Duration(BlockedDuration),
-	).Err()
-	if redisErr != nil {
-		log.Println("error inserting SaveBlockedDuration")
+	).Err(); redisErr != nil {
+		log.Println("error inserting SaveBlockedDuration for IP")
 		return redisErr
 	}
 

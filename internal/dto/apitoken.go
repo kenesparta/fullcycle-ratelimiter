@@ -2,6 +2,12 @@ package dto
 
 import "time"
 
+type APIKeyRequestDB struct {
+	MaxRequests   int     `json:"max_requests"`
+	TimeWindowSec int64   `json:"time_window_sec"`
+	Requests      []int64 `json:"requests"`
+}
+
 type APIKeyRequestSave struct {
 	Value   string
 	TimeAdd time.Time
