@@ -161,7 +161,7 @@ func (at *APIKeyRedis) GetRequest(ctx context.Context, key string) (*entity.Rate
 }
 
 func createAPIKeyDurationPrefix(key string) string {
-	return fmt.Sprintf("%s_%s", entity.APIKeyPrefixDurationKey, key)
+	return fmt.Sprintf("%s_%s", entity.APIKeyPrefixBlockedDurationKey, key)
 }
 
 func createAPIKeyRatePrefix(key string) string {

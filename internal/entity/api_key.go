@@ -6,11 +6,10 @@ import (
 )
 
 const (
-	APIKeyPrefixRateKey     = "rate:api-key"
-	APIKeyPrefixDurationKey = "duration:api-key"
-	APIKeyPrefixValueKey    = "value:api-key"
-	StatusAPIKeyBlocked     = "APIKeyBlocked"
-	APIKeyHeaderName        = "API_KEY"
+	APIKeyPrefixRateKey            = "rate:api-key"
+	APIKeyPrefixBlockedDurationKey = "blocked:api-key"
+	StatusAPIKeyBlocked            = "APIKeyBlocked"
+	APIKeyHeaderName               = "API_KEY"
 )
 
 // APIKey This key is related with the API Key that we can generate for each client
