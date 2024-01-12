@@ -195,13 +195,7 @@ To learn more about the CLI using for test, you can run this:
 docker compose run --rm go-cli-test -h
 ```
 
-## Testing with IP:
-
-Using docker you can run this command:
-
-```shell
-docker compose run --rm go-cli-test -url http://go-app:8080/hello-world -m GET -t 1 -r 10
-```
+Result
 
 ```
 Usage of ./cli-test:
@@ -216,6 +210,14 @@ Usage of ./cli-test:
   -url string
         URL to test
 
+```
+
+## Testing with IP:
+
+Using docker you can run this command:
+
+```shell
+docker compose run --rm go-cli-test -url http://go-app:8080/hello-world -m GET -t 1 -r 10
 ```
 
 ## Testing with API key
