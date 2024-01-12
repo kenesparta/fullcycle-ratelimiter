@@ -5,7 +5,6 @@ using [🔗 golang chi](https://github.com/go-chi/chi).
 
 # 🏭 How it works?
 
-- At the moment of the first request, we store this by IP or by API key.
 - We have this structure to handle the requests:
   ```go
   // RateLimiter is a struct that implements rate limiting logic.
@@ -30,30 +29,29 @@ using [🔗 golang chi](https://github.com/go-chi/chi).
       lock sync.Mutex
   }
   ```
-- If we have IP, we store the IP as key and this struct as a value:
-```json
-  {
-    "max_requests": 10,
-    "time_window_sec": 1,
-    "requests": [
-      1704787618,
-      1704787619,
-      1704787620,
-      1704787621
-    ]
-  }
-```
-- If we have API key, we store API key as a key and the same struct as a value.
-- Then, we verify if the given IP or API key are blocked. We stored a blocked key in the RedisDB by 
-  setting an EXPIRE time.
-- 
 
+
+- **Start Request:** The process begins when a client makes a request to any endpoint.
+- **Save Request:** The request is saved in Redis, which is a key-value store often used to manage session state or
+  perform rate limiting. Redis stores the request information associated with the client's IP address.
+- **Request has API key?:** The system checks if the request contains an API key. If it does, the flow continues with
+  the API key path; if not, it checks if there's an existing entry for the IP or API key.
+- **API key or IP exist?:** The system queries Redis to see if there's an existing record for the API key or IP address.
+  If there is no existing entry, it creates a new instance in Redis for tracking.
+- **Add request in the request list:** If an entry for the API key or IP address exists, the new request is added to the
+  list associated with that key or IP in Redis. This list keeps track of all the requests within a certain time window.
+- **Verify Blocked Duration:** Before proceeding, the system checks if the client has been blocked due to exceeding the
+  rate limit. If the client is currently blocked, the process ends and fails.
+- **Verify Limit:** If the client is not blocked, the system checks if the current request exceeds the set rate limit (
+  the maximum number of allowed requests in the time window).
+- **Continue to the endpoint/End:** If the request does not exceed the rate limit, the process continues to the
+  endpoint, meaning the API will handle the request as usual. If the rate limit is exceeded, the process ends,
+  indicating that the request will not be processed, and typically the client would receive a rate-limiting error 
+  response.
 
 ![img.png](img/rl_001.png)
 
-- We have two endpoints to test.
-
-# 🏔️ Env Variables
+# 🏔️ Environment variables and configuration
 
 ## IP configuration
 
@@ -82,7 +80,8 @@ using [🔗 golang chi](https://github.com/go-chi/chi).
 where:
 
 - `time_window`: is the value of **SECONDS** that we can allow the maximum amount of request.
-- `max_requests`: is the maximum amount of request that we can allow each `time_window` seconds.
+- `max_requests`: is the maximum amount of request that we can allow each `time_window` seconds. in the example, we have 
+  that the maximum number of requests is `10` each `1 second`.
 - `blocked_duration`: is the number of **SECONDS** that the IP is blocked, so we do not allow requests from this IP.
 
 ## API Token configuration
@@ -100,55 +99,26 @@ Content-Type: application/json
 }
 ```
 
+Or you can use a cURL:
+
+```shell
+curl -s \
+  -X POST \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "time_window": 1,
+    "max_requests": 10,
+    "blocked_duration": 60
+  }' http://127.0.0.1:8080/api-key
+```
+
 Each token has different configuration.
 
 # 🚀 Starting the application!
 
 - Execute the command `make prepare`, this will copy the default configuration.
 - Before you execute the docker compose command, you can edit the `env.json` configuration file with your onw values.
-- Finally, you can execute using the command `make run`
-
-# 🧪 How can I test?
-
-To learn more about the CLI using for test, you can run this:
-
-```shell
-docker compose run --rm go-cli-test -h
-```
-
-## Testing with IP only
-
-Using docker you can run this command:
-
-```shell
-docker compose run --rm go-cli-test -url http://go-app:8080/hello-world -m GET -t 1 -r 10
-```
-
-## Testing with API key
-
-- First, you need to execute this http request:
-   ```http request
-    POST http://127.0.0.1:8080/api-key
-    Content-Type: application/json
-    
-    {
-      "time_window": 1,
-      "max_requests": 10,
-      "blocked_duration": 60
-    }
-   ```
-- You will receive the response something like this (the api-key will be different)
-   ```json
-    {
-      "api-key": "c6f7363326f62f2483756447a963f2369a0dd5e90b7e8a36c32bc1a62ed38f51"
-    }
-   ```
-- Copy the value of `api-key` and execute the following command, you should put your own token in the `-k` flag.
-   ```shell
-   docker compose run --rm go-cli-test -url http://go-app:8080/hello-world-key -m GET -t 1 -r 10 -k c6f7363326f62f2483756447a963f2369a0dd5e90b7e8a36c32bc1a62ed38f51
-   ```
-
-- If you need to execute at the same time, please execute this shell script file: `./run.sh`, you need to install `jq`. 
+- Finally, you can execute using the command `make run`.
 
 # 💿 Redis DB
 
@@ -158,30 +128,30 @@ using [🔗 this redis UI](https://redis.com/redis-enterprise/redis-insight/) to
 ## API Key keys
 
 - `<apikey>`: we have this to store the configuration data of each API Key, we have this value as example:
-  key: `880d207159a7ac1a5a800eabbb310cf851e3c00cb5a2ff6e1ab9f38ce21bcc99`,
-  value:
-  ```json
-  {
-    "max_requests": 10,
-    "time_window": 1,
-    "blocked_duration": 60
-  }
-  ```
+    - key: `880d207159a7ac1a5a800eabbb310cf851e3c00cb5a2ff6e1ab9f38ce21bcc99`,
+    - value:
+      ```json
+      {
+        "max_requests": 10,
+        "time_window": 1,
+        "blocked_duration": 60
+      }
+      ```
 - `rate:api-key_<apikey>`: We have this to store the rates for the given `<apikey>`, we have this value as example:
-  key: `rate:api-key_880d207159a7ac1a5a800eabbb310cf851e3c00cb5a2ff6e1ab9f38ce21bcc99`,
-  value:
-  ```json
-  {
-    "max_requests": 10,
-    "time_window_sec": 1,
-    "requests": [
-      1704787618,
-      1704787619,
-      1704787620,
-      1704787621
-    ]
-  }
-  ```
+    - key: `rate:api-key_880d207159a7ac1a5a800eabbb310cf851e3c00cb5a2ff6e1ab9f38ce21bcc99`,
+    - value:
+      ```json
+      {
+        "max_requests": 10,
+        "time_window_sec": 1,
+        "requests": [
+          1704787618,
+          1704787619,
+          1704787620,
+          1704787621
+        ]
+      }
+      ```
 - `blocked:api-key_<apikey>`: We have this to store the amount of time that the `<apikey>` is blocked and doesn't
   receive more requests, we have this value as example:
     - key: `blocked:api-key_880d207159a7ac1a5a800eabbb310cf851e3c00cb5a2ff6e1ab9f38ce21bcc99`
@@ -212,3 +182,45 @@ using [🔗 this redis UI](https://redis.com/redis-enterprise/redis-insight/) to
     - value: `IPBlocked`
     - This key has a duration in the redis database, this duration is the value of `rate_limiter.by_ip.blocked_duration`
       saved in the `./env.json` configuration data.
+
+# 🧪 How can I test?
+
+To learn more about the CLI using for test, you can run this:
+
+```shell
+docker compose run --rm go-cli-test -h
+```
+
+## Testing with IP:
+
+Using docker you can run this command:
+
+```shell
+docker compose run --rm go-cli-test -url http://go-app:8080/hello-world -m GET -t 1 -r 10
+```
+
+## Testing with API key
+
+- First, you need to execute this http request in order to create your API key and set its configuration:
+   ```http request
+    POST http://127.0.0.1:8080/api-key
+    Content-Type: application/json
+    
+    {
+      "time_window": 1,
+      "max_requests": 10,
+      "blocked_duration": 60
+    }
+   ```
+- You will receive the response something like this (the api-key will be different)
+   ```json
+    {
+      "api-key": "c6f7363326f62f2483756447a963f2369a0dd5e90b7e8a36c32bc1a62ed38f51"
+    }
+   ```
+- Copy the value of `api-key` and execute the following command, you should put your own token in the `-k` flag.
+   ```shell
+   docker compose run --rm go-cli-test -url http://go-app:8080/hello-world-key -m GET -t 1 -r 10 -k c6f7363326f62f2483756447a963f2369a0dd5e90b7e8a36c32bc1a62ed38f51
+   ```
+
+- If you need to execute at the same time, please execute this shell script file: `./run.sh`, you need to install `jq`.

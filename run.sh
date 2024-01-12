@@ -12,7 +12,7 @@ API_KEY_VAL=$(curl -s \
   "blocked_duration": 60
 }' http://127.0.0.1:8080/api-key | jq '.api_key')
 
-echo "$API_KEY_VAL"
+echo "Token created: $API_KEY_VAL"
 
 echo "Running docker compose..."
 
