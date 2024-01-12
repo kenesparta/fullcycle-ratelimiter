@@ -118,7 +118,7 @@ Each token has different configuration.
 
 - Execute the command `make prepare`, this will copy the default configuration.
 - Before you execute the docker compose command, you can edit the `env.json` configuration file with your onw values.
-- Finally, you can execute using the command `make run`.
+- Finally, you can execute using the command `make run`. and then we can see the containers set in `docker-compose.yaml`.
 
 # 💿 Redis DB
 
@@ -183,6 +183,10 @@ using [🔗 this redis UI](https://redis.com/redis-enterprise/redis-insight/) to
     - This key has a duration in the redis database, this duration is the value of `rate_limiter.by_ip.blocked_duration`
       saved in the `./env.json` configuration data.
 
+- Here an example of the keys:
+
+![img_1.png](img/redis_keys.png)
+
 # 🧪 How can I test?
 
 To learn more about the CLI using for test, you can run this:
@@ -199,28 +203,48 @@ Using docker you can run this command:
 docker compose run --rm go-cli-test -url http://go-app:8080/hello-world -m GET -t 1 -r 10
 ```
 
+```
+Usage of ./cli-test:
+  -k string
+        API Key for the request
+  -m string
+        HTTP method to use (default "GET")
+  -r int
+        Maximum amount of requests to send (default 100)
+  -t int
+        Time in seconds of each request (default 1)
+  -url string
+        URL to test
+
+```
+
 ## Testing with API key
 
 - First, you need to execute this http request in order to create your API key and set its configuration:
-   ```http request
-    POST http://127.0.0.1:8080/api-key
-    Content-Type: application/json
-    
-    {
+  ```shell
+  curl -s \
+    -X POST \
+    --header 'Content-Type: application/json' \
+    --data '{
       "time_window": 1,
       "max_requests": 10,
       "blocked_duration": 60
-    }
-   ```
+    }' http://127.0.0.1:8080/api-key
+  ```
 - You will receive the response something like this (the api-key will be different)
    ```json
-    {
-      "api-key": "c6f7363326f62f2483756447a963f2369a0dd5e90b7e8a36c32bc1a62ed38f51"
-    }
+     {
+       "api_key": "c6f7363326f62f2483756447a963f2369a0dd5e90b7e8a36c32bc1a62ed38f51"
+     }
    ```
 - Copy the value of `api-key` and execute the following command, you should put your own token in the `-k` flag.
-   ```shell
-   docker compose run --rm go-cli-test -url http://go-app:8080/hello-world-key -m GET -t 1 -r 10 -k c6f7363326f62f2483756447a963f2369a0dd5e90b7e8a36c32bc1a62ed38f51
-   ```
-
-- If you need to execute at the same time, please execute this shell script file: `./run.sh`, you need to install `jq`.
+  ```shell
+  docker compose run \
+    --rm \
+    go-cli-test \
+    -url http://go-app:8080/hello-world-key \
+    -m GET \
+    -t 1 \
+    -r 10 \
+    -k c6f7363326f62f2483756447a963f2369a0dd5e90b7e8a36c32bc1a62ed38f51
+  ```

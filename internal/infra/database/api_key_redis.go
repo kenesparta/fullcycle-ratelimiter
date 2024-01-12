@@ -48,10 +48,6 @@ func (at *APIKeyRedis) Save(ctx context.Context, key *entity.APIKey) (string, er
 
 func (at *APIKeyRedis) Get(ctx context.Context, value string) (*entity.APIKey, error) {
 	val, getErr := at.redisCli.Get(ctx, value).Result()
-	if errors.Is(getErr, redis.Nil) {
-		log.Println("API key does not exist")
-		return &entity.APIKey{}, getErr
-	}
 	if getErr != nil {
 		return &entity.APIKey{}, getErr
 	}
